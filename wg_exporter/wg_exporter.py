@@ -98,6 +98,3 @@ def run(server_class: type = HTTPServer, handler_class: type = WireGuardMetricsH
     logger.info(f'Starting httpd on port {port}...')
     httpd.serve_forever()
 
-
-if __name__ == '__main__':
-    run()
