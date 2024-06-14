@@ -68,6 +68,8 @@ To enhance security, it is recommended to run the `wg_exporter` service as a ded
 
    Ensure your project files (`__init__.py` and `wg_exporter.py`) are copied to this directory.
 
+**`install.sh` file can also be run to achieve this, as `./install.sh`
+
 ## Running the Exporter
 
 ### Development
