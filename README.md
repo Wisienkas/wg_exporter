@@ -39,10 +39,23 @@
 
 ## Configuration
 
-1. **Setting log location through `WG_EXPORTER_LOG_FILE`**
-   
-   Only configuration needed is `WG_EXPORTER_LOG_FILE`,
-   which defaults to `wg_exporter.log`.
+1. **Environment Variables**
+
+   - `ENV`: Determines the environment configuration to use (default is `development`).
+   - `WG_EXPORTER_LOG_FILE`: Path to the log file. This can be set in the environment variables or in the `config.ini` file.
+
+2. **Configuration File**
+
+   Create a `config.ini` file in the same directory as your configuration module (`config.py`). This file should define the log file paths for different environments.
+   (This is included with the build as below)
+
+   ```ini
+   [development]
+   WG_EXPORTER_LOG_FILE = ./wg_exporter_dev.log
+
+   [production]
+   WG_EXPORTER_LOG_FILE = /var/log/wgexporter/wg_exporter.log
+
 
 ## Setting Up the Service User
 
@@ -62,11 +75,11 @@ To enhance security, it is recommended to run the `wg_exporter` service as a ded
 
    ```bash
    sudo mkdir -p /etc/local/bin/wg_exporter
+   cd wg_exporter
    sudo cp -r * /etc/local/bin/wg_exporter/
+   cd ..
    sudo chown -R wgexporter:wgexporter /etc/local/bin/wg_exporter
    ```
-
-   Ensure your project files (`__init__.py` and `wg_exporter.py`) are copied to this directory.
 
 **`install.sh` file can also be run to achieve this, as `./install.sh`
 
@@ -97,14 +110,14 @@ python /etc/local/bin/wg_exporter/__init__.py
    [Unit]
    Description=WireGuard Exporter
    After=network.target
-
+   
    [Service]
    User=wgexporter
    Group=wgexporter
-   Environment=WG_EXPORTER_LOG_FILE=/var/log/wgexporter/wg_exporter.log
-   ExecStart=/usr/bin/env python3 /etc/local/bin/wg_exporter/__init__.py
+   Environment=ENV=production
+   ExecStart=/usr/bin/env python3 /etc/local/bin/wg_exporter/server.py
    Restart=always
-
+   
    [Install]
    WantedBy=multi-user.target
    ```
